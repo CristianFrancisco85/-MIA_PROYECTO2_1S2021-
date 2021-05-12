@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import {Button,Typography,Grid,Box,Input,Container,TextField,Link} from '@material-ui/core'
-import {BrowserRouter as Router,Switch,Route,Link as LinkRouter} from "react-router-dom";
+import {Button,Typography,Container,TextField,Link} from '@material-ui/core'
+import {BrowserRouter as Router,Link as LinkRouter} from "react-router-dom";
 
-export default class Login extends Component {
+export default class LoginAdmin extends Component {
 
     constructor(props){
         super(props)
@@ -11,23 +11,20 @@ export default class Login extends Component {
             user:'',
             password:''
         }
-        
-        
     }
 
 
-     async handleSubmit(e){
+    async handleSubmit(e){
         e.preventDefault()
         try{
-            await fetch(`http://localhost:8080/loginCliente/${this.state.user}/${this.state.password}`,
+            await fetch(`http://localhost:8080/loginAdmin/${this.state.user}/${this.state.password}`,
             {   
                 method:'POST'
             })
             .then(response => response.json())
             .then(data => {
                 if(data==1){
-                    localStorage.setItem("username",this.state.user)
-                    this.props.history.push("/menu");
+                    this.props.history.push("/dashboard");
                 }
                 else{
                     alert("Datos incorrectos")
@@ -37,15 +34,14 @@ export default class Login extends Component {
         catch(error){
             console.error(error)
         }
-       
     }
 
     render() {
 
         return (
             <Container component="main" maxWidth="sm" style={{marginTop:250}}>
+                <Typography component="h1" variant="h5">Login Admin</Typography>
                 <form onSubmit={(e)=>this.handleSubmit(e)}>
-                <Typography component="h1" variant="h5">Login Users</Typography>
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -69,20 +65,19 @@ export default class Login extends Component {
                 />
                 <Button
                     fullWidth
-                    type="submit"
                     variant="contained"
                     color="primary"
+                    type="submit"
                 >
                     Sign In
                 </Button>
                 </form>
-
                 <br></br>
                 <Link component={LinkRouter} to="/createAccount">
                     Crear Cuenta
                 </Link>
-                <Link component={LinkRouter} to="/loginAdmin">
-                    Login Admin
+                <Link component={LinkRouter} to="/login">
+                    Login Users
                 </Link>
           </Container>
         )
